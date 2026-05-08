@@ -52,14 +52,19 @@ namespace NotificationBLLibrary.Services
         {
             Console.WriteLine("List of Users:");
             List<User>? users = userRepository.GetAll();
-            if (users==null)
+            if (users == null || !users.Any())
             {
                 Console.WriteLine("No users found.");
                 return;
             }
-            foreach (var user in users)
+
+            var userLines =
+                from user in users
+                select $"- {user.Name} (Email: {user.Email}, Phone: {user.PhoneNumber})";
+
+            foreach (var line in userLines)
             {
-                Console.WriteLine($"- {user.Name} (Email: {user.Email}, Phone: {user.PhoneNumber})");
+                Console.WriteLine(line);
             }
         }
 
@@ -117,9 +122,19 @@ namespace NotificationBLLibrary.Services
         public void PrintNotificationsForUser(User user)
         {
             Console.WriteLine($"Notifications for {user.Name}:");
-            foreach (var notification in user.Notifications)
+            if (user.Notifications == null || !user.Notifications.Any())
             {
-                Console.WriteLine($"- {notification.GetType().Name}: {notification.Message} (Sent: {notification.SentDate})");
+                Console.WriteLine("No notifications found.");
+                return;
+            }
+
+            var notificationLines = user.Notifications
+                .Select(notification =>
+                    $"- {notification.GetType().Name}: {notification.Message} (Sent: {notification.SentDate})");
+
+            foreach (var line in notificationLines)
+            {
+                Console.WriteLine(line);
             }
         }
 
