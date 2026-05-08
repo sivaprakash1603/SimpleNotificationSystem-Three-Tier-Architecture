@@ -1,0 +1,15 @@
+/Users/sivaprakashs/Documents/NotificationSytemMulti-Tier/SimpleNotificationSystem/NotificationDALLibrary/bin/Debug/net10.0/NotificationDALLibrary.deps.json
+/Users/sivaprakashs/Documents/NotificationSytemMulti-Tier/SimpleNotificationSystem/NotificationDALLibrary/bin/Debug/net10.0/NotificationDALLibrary.dll
+/Users/sivaprakashs/Documents/NotificationSytemMulti-Tier/SimpleNotificationSystem/NotificationDALLibrary/bin/Debug/net10.0/NotificationDALLibrary.pdb
+/Users/sivaprakashs/Documents/NotificationSytemMulti-Tier/SimpleNotificationSystem/NotificationDALLibrary/bin/Debug/net10.0/NotificationModelLibrary.dll
+/Users/sivaprakashs/Documents/NotificationSytemMulti-Tier/SimpleNotificationSystem/NotificationDALLibrary/bin/Debug/net10.0/NotificationModelLibrary.pdb
+/Users/sivaprakashs/Documents/NotificationSytemMulti-Tier/SimpleNotificationSystem/NotificationDALLibrary/obj/Debug/net10.0/NotificationDALLibrary.csproj.AssemblyReference.cache
+/Users/sivaprakashs/Documents/NotificationSytemMulti-Tier/SimpleNotificationSystem/NotificationDALLibrary/obj/Debug/net10.0/NotificationDALLibrary.GeneratedMSBuildEditorConfig.editorconfig
+/Users/sivaprakashs/Documents/NotificationSytemMulti-Tier/SimpleNotificationSystem/NotificationDALLibrary/obj/Debug/net10.0/NotificationDALLibrary.AssemblyInfoInputs.cache
+/Users/sivaprakashs/Documents/NotificationSytemMulti-Tier/SimpleNotificationSystem/NotificationDALLibrary/obj/Debug/net10.0/NotificationDALLibrary.AssemblyInfo.cs
+/Users/sivaprakashs/Documents/NotificationSytemMulti-Tier/SimpleNotificationSystem/NotificationDALLibrary/obj/Debug/net10.0/NotificationDALLibrary.csproj.CoreCompileInputs.cache
+/Users/sivaprakashs/Documents/NotificationSytemMulti-Tier/SimpleNotificationSystem/NotificationDALLibrary/obj/Debug/net10.0/Notifica.69973E61.Up2Date
+/Users/sivaprakashs/Documents/NotificationSytemMulti-Tier/SimpleNotificationSystem/NotificationDALLibrary/obj/Debug/net10.0/NotificationDALLibrary.dll
+/Users/sivaprakashs/Documents/NotificationSytemMulti-Tier/SimpleNotificationSystem/NotificationDALLibrary/obj/Debug/net10.0/refint/NotificationDALLibrary.dll
+/Users/sivaprakashs/Documents/NotificationSytemMulti-Tier/SimpleNotificationSystem/NotificationDALLibrary/obj/Debug/net10.0/NotificationDALLibrary.pdb
+/Users/sivaprakashs/Documents/NotificationSytemMulti-Tier/SimpleNotificationSystem/NotificationDALLibrary/obj/Debug/net10.0/ref/NotificationDALLibrary.dll
