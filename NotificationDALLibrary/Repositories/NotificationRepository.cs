@@ -8,12 +8,12 @@ namespace NotificationDALLibrary.Repositories
     // Repository for storing and retrieving notifications, extends AbstractRepository
     public class NotificationRepository : AbstractRepository<string, List<Notification>>
     {
+        private static readonly Dictionary<string, List<Notification>> SharedItems = new Dictionary<string, List<Notification>>();
         private static List<Notification> _allNotifications = new List<Notification>();
 
         public NotificationRepository()
         {
-            if (_items == null)
-                _items = new Dictionary<string, List<Notification>>();
+            _items = SharedItems;
         }
 
         // Saves a notification to the repository and links it to the user
@@ -57,8 +57,7 @@ namespace NotificationDALLibrary.Repositories
         public void ClearAllNotifications()
         {
             _allNotifications.Clear();
-            if (_items != null)
-                _items.Clear();
+            SharedItems.Clear();
         }
 
         // Gets the total count of stored notifications
@@ -72,9 +71,6 @@ namespace NotificationDALLibrary.Repositories
         {
             if (item == null)
                 throw new ArgumentNullException(nameof(item));
-
-            if (_items == null)
-                _items = new Dictionary<string, List<Notification>>();
 
             return item;
         }

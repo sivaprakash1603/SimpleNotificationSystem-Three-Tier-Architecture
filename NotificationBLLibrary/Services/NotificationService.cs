@@ -146,5 +146,7 @@ namespace NotificationBLLibrary.Services
             // Check if it contains only digits and is reasonably long
             return cleaned.Length >= 10 && cleaned.All(char.IsDigit);
         }
+
+        
     }
 }

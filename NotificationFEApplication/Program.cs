@@ -27,7 +27,10 @@ namespace NotificationSystem
             {
                 try
                 {
+                    Console.WriteLine("");
+                    Console.ForegroundColor = ConsoleColor.Cyan;
                     Console.WriteLine("Welcome to the Notification System!");
+                    Console.ResetColor();
                     Console.WriteLine("\nMenu:");
                     Console.WriteLine("1. Add User");
                     Console.WriteLine("2. List Users");
@@ -39,7 +42,7 @@ namespace NotificationSystem
                     Console.Write("Choose an option: ");
 
                     string choice = Console.ReadLine() ?? string.Empty;
-
+                    Console.Clear();
                     switch (choice)
                     {
                         case "1":
@@ -76,23 +79,33 @@ namespace NotificationSystem
                 }
                 catch (NotificationException ex)
                 {
+                    Console.ForegroundColor=ConsoleColor.Red;
                     Console.WriteLine($"Error: {ex.Message}");
+                    Console.ResetColor();
                 }
                 catch (ArgumentException ex)
                 {
+                    Console.ForegroundColor=ConsoleColor.Red;
                     Console.WriteLine($"Invalid input: {ex.Message}");
+                    Console.ResetColor();
                 }
                 catch (InvalidOperationException ex)
                 {
+                    Console.ForegroundColor=ConsoleColor.Red;
                     Console.WriteLine($"Operation error: {ex.Message}");
+                    Console.ResetColor();
                 }
                 catch (FormatException ex)
                 {
+                    Console.ForegroundColor=ConsoleColor.Red;
                     Console.WriteLine($"Format error: {ex.Message}");
+                    Console.ResetColor();
                 }
                 catch (Exception ex)
                 {
+                    Console.ForegroundColor=ConsoleColor.Red;
                     Console.WriteLine($"Unexpected error: {ex.Message}");
+                    Console.ResetColor();
                 }
             }
         }

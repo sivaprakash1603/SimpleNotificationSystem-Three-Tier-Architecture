@@ -50,8 +50,10 @@ namespace NotificationBLLibrary.Services
             {
                 throw new NotificationException($"A user with email '{email}' already exists.");
             }
-
+            Console.WriteLine("");
+            Console.ForegroundColor=ConsoleColor.Green;
             Console.WriteLine($"User '{name}' created successfully.");
+            Console.ResetColor();
         }
 
         public void ListUsers()
@@ -59,8 +61,10 @@ namespace NotificationBLLibrary.Services
             Console.WriteLine("List of Users:");
             List<User>? users = _userRepository.GetAll();
             if (users == null || !users.Any())
-            {
+            {   
+                Console.ForegroundColor=ConsoleColor.Yellow;
                 Console.WriteLine("No users found.");
+                Console.ResetColor();
                 return;
             }
 
