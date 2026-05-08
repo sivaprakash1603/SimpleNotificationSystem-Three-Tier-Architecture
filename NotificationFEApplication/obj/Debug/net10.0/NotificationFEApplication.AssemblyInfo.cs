@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("NotificationFEApplication")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+e1d67c59a78ae489bfd34504da054f7fb0e186db")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+765d9eb40df6029af556a0c956b8ff46bd67963a")]
 [assembly: System.Reflection.AssemblyProductAttribute("NotificationFEApplication")]
 [assembly: System.Reflection.AssemblyTitleAttribute("NotificationFEApplication")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

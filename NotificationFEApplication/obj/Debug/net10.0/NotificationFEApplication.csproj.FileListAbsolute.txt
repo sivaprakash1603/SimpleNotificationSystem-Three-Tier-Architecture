@@ -20,3 +20,4 @@
 /Users/sivaprakashs/Documents/NotificationSytemMulti-Tier/SimpleNotificationSystem/NotificationFEApplication/obj/Debug/net10.0/NotificationFEApplication.pdb
 /Users/sivaprakashs/Documents/NotificationSytemMulti-Tier/SimpleNotificationSystem/NotificationFEApplication/obj/Debug/net10.0/NotificationFEApplication.genruntimeconfig.cache
 /Users/sivaprakashs/Documents/NotificationSytemMulti-Tier/SimpleNotificationSystem/NotificationFEApplication/obj/Debug/net10.0/ref/NotificationFEApplication.dll
+/Users/sivaprakashs/Documents/NotificationSytemMulti-Tier/SimpleNotificationSystem/NotificationFEApplication/obj/Debug/net10.0/NotificationFEApplication.sourcelink.json
