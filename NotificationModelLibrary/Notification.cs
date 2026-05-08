@@ -10,6 +10,8 @@ namespace NotificationModelLibrary.Models
 {
     public abstract class Notification : INotification
     {
+        private const int MinMessageLength = 5;
+
         public string Message { get; set; } = string.Empty;
         public DateTime SentDate { get; set; } = DateTime.Now;
 
@@ -20,10 +22,16 @@ namespace NotificationModelLibrary.Models
                 throw new ArgumentException("Notification message cannot be empty.", nameof(message));
             }
 
+            if (message.Length < MinMessageLength)
+            {
+                throw new ArgumentException($"Notification message length should be at least {MinMessageLength} characters.", nameof(message));
+            }
+
             Message = message;
             SentDate = DateTime.Now;
         }
 
+        // Send notification to user
         public abstract void Send(User user);
 
         public override string ToString()
