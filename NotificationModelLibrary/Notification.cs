@@ -14,6 +14,7 @@ namespace NotificationModelLibrary.Models
 
         public string Message { get; set; } = string.Empty;
         public DateTime SentDate { get; set; } = DateTime.Now;
+        public string UserEmail { get; set; } = string.Empty;
 
         public Notification(string message)
         {

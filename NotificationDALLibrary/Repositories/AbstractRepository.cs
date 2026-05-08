@@ -12,6 +12,13 @@ namespace NotificationDALLibrary.Repositories
     {
         protected Dictionary<K, T>? _items;
 
+        // Indexer for accessing items by key
+        public T this[K index]
+        {
+            get { return _items![index]; }
+            set { _items![index] = value; }
+        }
+
         public abstract T? Create(T item);
 
         public T? Remove(K key)

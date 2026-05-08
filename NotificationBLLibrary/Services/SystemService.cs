@@ -12,7 +12,13 @@ namespace NotificationBLLibrary.Services
 {
     public class SystemService : ISystemInteract
     {
-        private UserRepository userRepository = new UserRepository();
+        private readonly UserRepository _userRepository;
+        private readonly NotificationRepository _notificationRepository;
+
+        public SystemService(){
+            _userRepository = new UserRepository();
+            _notificationRepository = new NotificationRepository();
+        }
 
         private User GetUserOrThrow(string email)
         {
@@ -21,7 +27,7 @@ namespace NotificationBLLibrary.Services
                 throw new ArgumentException("Email cannot be empty.", nameof(email));
             }
 
-            var user = userRepository.Get(email);
+            var user = _userRepository.Get(email);
             if (user == null)
             {
                 throw new NotificationException($"No user found with email: {email}");
@@ -40,7 +46,7 @@ namespace NotificationBLLibrary.Services
             Console.Write("Phone Number: ");
             string phoneNumber = Console.ReadLine() ?? string.Empty;
             var user = new User(name, email, phoneNumber);
-            if (userRepository.Create(user) == null)
+            if (_userRepository.Create(user) == null)
             {
                 throw new NotificationException($"A user with email '{email}' already exists.");
             }
@@ -51,7 +57,7 @@ namespace NotificationBLLibrary.Services
         public void ListUsers()
         {
             Console.WriteLine("List of Users:");
-            List<User>? users = userRepository.GetAll();
+            List<User>? users = _userRepository.GetAll();
             if (users == null || !users.Any())
             {
                 Console.WriteLine("No users found.");
@@ -97,7 +103,7 @@ namespace NotificationBLLibrary.Services
             {
                 user.PhoneNumber = phoneNumber;
             }
-            userRepository.Update(email, user);
+            _userRepository.Update(email, user);
             Console.WriteLine($"User details updated successfully.");       
         }
         
@@ -105,7 +111,7 @@ namespace NotificationBLLibrary.Services
         {
             Console.WriteLine("Enter the email of the user to delete:");
             string email = Console.ReadLine() ?? string.Empty;
-            bool deleted = userRepository.Delete(GetUserOrThrow(email).Email);
+            bool deleted = _userRepository.Delete(GetUserOrThrow(email).Email);
             if (deleted)
             {
                 Console.WriteLine($"User with email '{email}' deleted successfully.");
@@ -122,13 +128,14 @@ namespace NotificationBLLibrary.Services
         public void PrintNotificationsForUser(User user)
         {
             Console.WriteLine($"Notifications for {user.Name}:");
-            if (user.Notifications == null || !user.Notifications.Any())
+            var notifications = _notificationRepository.GetNotificationsForUser(user.Email);
+            if (notifications == null || !notifications.Any())
             {
                 Console.WriteLine("No notifications found.");
                 return;
             }
 
-            var notificationLines = user.Notifications
+            var notificationLines = notifications
                 .Select(notification =>
                     $"- {notification.GetType().Name}: {notification.Message} (Sent: {notification.SentDate})");
 

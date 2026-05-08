@@ -11,11 +11,6 @@ namespace NotificationDALLibrary.Repositories
             _items = new Dictionary<string, User>();
         }
         
-        public User this[string index]
-        {   
-            get{return _items![index];}
-            set{_items![index] = value;}
-        }
         public override User? Create(User item)
         {
             if (_items==null||_items.ContainsKey(item.Email))
@@ -25,6 +20,5 @@ namespace NotificationDALLibrary.Repositories
             _items.Add(item.Email, item);
             return item;
         }
-
     }
 }

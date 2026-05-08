@@ -14,10 +14,6 @@ namespace NotificationModelLibrary.Models
         public string Email { get; set; } = string.Empty;
         public string PhoneNumber { get; set; } = string.Empty;
 
-        public List<Notification> Notifications { get; set; } = new List<Notification>();
-
-
-
         public User() { }
 
         public User(string name, string email, string phoneNumber)
@@ -45,12 +41,6 @@ namespace NotificationModelLibrary.Models
             Name = name;
             Email = email;
             PhoneNumber = phoneNumber;
-        }
-
-        public void AddNotification(Notification notification)
-        {
-            ArgumentNullException.ThrowIfNull(notification);
-            Notifications.Add(notification);
         }
 
     }

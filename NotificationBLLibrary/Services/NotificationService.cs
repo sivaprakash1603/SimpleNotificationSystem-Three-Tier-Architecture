@@ -93,8 +93,7 @@ namespace NotificationBLLibrary.Services
                 notification = SendEmailNotification(user.Email);
                 sender = new EmailNotificationSender();
                 sender.Send(user, notification);
-                user.AddNotification(notification);
-                _notificationRepository.SaveNotification(notification);
+                _notificationRepository.SaveNotification(notification, user.Email);
                 Console.WriteLine($"Notification sent to {user.Name} via Email.");
             }
             else if (option == 2)
@@ -102,8 +101,7 @@ namespace NotificationBLLibrary.Services
                 notification = SendSMSNotification(user.PhoneNumber);
                 sender = new SmsNotificationSender();
                 sender.Send(user, notification);
-                user.AddNotification(notification);
-                _notificationRepository.SaveNotification(notification);
+                _notificationRepository.SaveNotification(notification, user.Email);
                 Console.WriteLine($"Notification sent to {user.Name} via SMS.");
             }
         }
