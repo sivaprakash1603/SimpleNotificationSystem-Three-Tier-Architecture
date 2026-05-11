@@ -41,7 +41,9 @@ namespace NotificationDALLibrary.Repositories
             }
 
             notification.UserEmail = userEmail;
-            string sql = $"INSERT INTO notifications (user_email, message, sent_date, notification_type, to_email, to_phone_number) VALUES ('{userEmail}', '{notification.Message}', '{notification.SentDate}', '{notificationType}', '{toEmail}', '{toPhoneNumber}');";
+            string toEmailValue = toEmail == null ? "NULL" : $"'{toEmail}'";
+            string toPhoneValue = toPhoneNumber == null ? "NULL" : $"'{toPhoneNumber}'";
+            string sql = $"INSERT INTO notifications (user_email, message, sent_date, notification_type, to_email, to_phone_number) VALUES ('{userEmail}', '{notification.Message}', '{notification.SentDate:yyyy-MM-dd HH:mm:ss}', '{notificationType}', {toEmailValue}, {toPhoneValue});";
             NpgsqlCommand command = new NpgsqlCommand(sql, connection);
             
             try
@@ -61,7 +63,7 @@ namespace NotificationDALLibrary.Repositories
 
         public List<Notification> GetAllNotifications()
         {
-            string sql = "SELECT user_email, message, sent_date, notification_type, to_email, to_phone_number FROM notifications ORDER BY sent_date DESC;";
+            string sql = "SELECT n.user_email, n.message, n.sent_date, n.notification_type, n.to_email, n.to_phone_number, u.name, u.phone_number FROM notifications n JOIN users u ON n.user_email = u.email ORDER BY n.sent_date DESC;";
             NpgsqlCommand command = new NpgsqlCommand(sql, connection);
             
             try
@@ -92,7 +94,7 @@ namespace NotificationDALLibrary.Repositories
             if (string.IsNullOrWhiteSpace(userEmail))
                 throw new ArgumentException("User email cannot be empty.", nameof(userEmail));
 
-            string sql = $"SELECT user_email, message, sent_date, notification_type, to_email, to_phone_number FROM notifications WHERE user_email = '{userEmail}' ORDER BY sent_date DESC;";
+            string sql = $"SELECT n.user_email, n.message, n.sent_date, n.notification_type, n.to_email, n.to_phone_number, u.name, u.phone_number FROM notifications n JOIN users u ON n.user_email = u.email WHERE n.user_email = '{userEmail}' ORDER BY n.sent_date DESC;";
             NpgsqlCommand command = new NpgsqlCommand(sql, connection);
             
             try
