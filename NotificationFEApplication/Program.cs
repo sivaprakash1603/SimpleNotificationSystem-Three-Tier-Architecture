@@ -1,7 +1,9 @@
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
+using System.Text.Json;
 using System.Threading.Tasks;
 using NotificationBLLibrary.Interfaces;
 using NotificationBLLibrary.Services;
@@ -12,14 +14,38 @@ namespace NotificationSystem
 {
     internal class Program
     {
-        ISendNotification SendNotification;
-        ISystemInteract SystemInteract;
+        private readonly ISendNotification SendNotification;
+        private readonly ISystemInteract SystemInteract;
+        private readonly string connectionString;
 
         public Program()
         {
-            SendNotification = new NotificationService();
-            SystemInteract = new SystemService();
+            connectionString = LoadConnectionString();
+            SendNotification = new NotificationService(connectionString);
+            SystemInteract = new SystemService(connectionString);
         }
+
+        private static string LoadConnectionString()
+        {
+            string configPath = Path.Combine(AppContext.BaseDirectory, "appsettings.json");
+
+            if (!File.Exists(configPath))
+            {
+                throw new FileNotFoundException($"Configuration file not found: {configPath}");
+            }
+
+            using JsonDocument document = JsonDocument.Parse(File.ReadAllText(configPath));
+
+            if (!document.RootElement.TryGetProperty("ConnectionStrings", out JsonElement connectionStrings) ||
+                !connectionStrings.TryGetProperty("DefaultConnection", out JsonElement defaultConnection) ||
+                string.IsNullOrWhiteSpace(defaultConnection.GetString()))
+            {
+                throw new InvalidOperationException("ConnectionStrings:DefaultConnection is missing from appsettings.json.");
+            }
+
+            return defaultConnection.GetString()!;
+        }
+
 
         void StartSystem()
         {
