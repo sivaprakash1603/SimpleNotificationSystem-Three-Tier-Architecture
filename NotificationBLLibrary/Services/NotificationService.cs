@@ -17,9 +17,9 @@ namespace NotificationBLLibrary.Services
         private const int MinMessageLength = 5;
         private const int MaxSmsLength = 160;
 
-        public NotificationService(string connectionString)
+        public NotificationService()
         {
-            _notificationRepository = new NotificationRepository(connectionString);
+            _notificationRepository = new NotificationRepository();
         }
 
         // Creates and validates an email notification

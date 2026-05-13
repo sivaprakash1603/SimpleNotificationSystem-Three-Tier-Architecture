@@ -10,6 +10,8 @@ namespace NotificationModelLibrary.Models
     {
         public string ToEmail { get; set; } = string.Empty;
 
+        public EmailNotification() : base() { }
+
         public EmailNotification(string email, string message) : base(message)
         {
             if (string.IsNullOrWhiteSpace(email))

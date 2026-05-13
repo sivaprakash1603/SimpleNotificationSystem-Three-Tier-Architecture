@@ -5,66 +5,64 @@ using System.Text;
 using System.Threading.Tasks;
 using NotificationModelLibrary.Models;
 using NotificationDALLibrary.Interfaces;
+using NotificationDALLibrary.Contexts;
 
 namespace NotificationDALLibrary.Repositories
 {
     public abstract class AbstractRepository<K,T> : IRepository<K,T> where K : notnull where T : class
     {
-        protected Dictionary<K, T>? _items;
+        protected NotificationContext _context;
 
-        // Indexer for accessing items by key
-        public T this[K index]
+        public AbstractRepository()
         {
-            get { return _items![index]; }
-            set { _items![index] = value; }
+            _context = new NotificationContext();
         }
-
-        public abstract T? Create(T item);
+        virtual public T? Create(T item)
+        {
+            _context.Add(item);
+            _context.SaveChanges();
+            return item;
+        }
 
         public T? Remove(K key)
         {
-                if (_items==null||!_items.ContainsKey(key))
-                {
-                    return null;
-                }
-                T item = _items[key];
-                _items.Remove(key);
-                return item;
+            var item = Get(key);
+            if (item == null){
+                throw new KeyNotFoundException($"No item found with key: {key}");
+            }
+            _context.Remove(item);
+            _context.SaveChanges();
+            return item;
         }
         public T? Get(K key)
         {
-            if (_items==null|| !_items.ContainsKey(key))
-            {
-                return null;
-            }
-            return _items[key];
+            return _context.Set<T>().Find(key);
         }
         public  List<T>? GetAll()
         {
-            if(_items==null||_items.Count == 0)
-            {
-                return null;
-            }
-            return _items.Values.ToList();
+            return _context.Set<T>().ToList();
         }
 
         public  T? Update(K key, T item)
         {
-            if (_items==null||!_items.ContainsKey(key))
-            {
-                return null;
+            var existingItem = Get(key);
+            if (existingItem == null){
+                throw new KeyNotFoundException($"No item found with key: {key}");
             }
-            _items[key] = item;
-            return item;
+            _context.Entry(existingItem).CurrentValues.SetValues(item);
+            _context.SaveChanges();
+            return existingItem;
         }
 
-            public bool Delete(K key)
-            {
-                if (_items==null||!_items.ContainsKey(key))
-                {
-                    return false;
-                }
-                return _items.Remove(key);
+        public bool Delete(K key)
+        {
+            var item = Get(key);
+            if (item == null){
+                throw new KeyNotFoundException($"No item found with key: {key}");
             }
+            _context.Remove(item);
+            _context.SaveChanges();
+            return true;
+        }
     }
 }

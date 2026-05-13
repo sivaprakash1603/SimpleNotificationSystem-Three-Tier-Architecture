@@ -1,18 +1,17 @@
 using System;
 using System.Collections.Generic;
 using Npgsql;
-using NotificationDALLibrary.Infrastructure;
 using NotificationModelLibrary.Models;
+using NotificationDALLibrary.Contexts;
 
 namespace NotificationDALLibrary.Repositories
 {
-    public class NotificationRepository
+    public class NotificationRepository: AbstractRepository<string, Notification> 
     {
-        private readonly NpgsqlConnection connection;
 
-        public NotificationRepository(string connectionString)
+        public NotificationRepository()
         {
-            connection = new NpgsqlConnection(connectionString);
+            _context = new NotificationContext();
         }
 
         public void SaveNotification(Notification notification, string userEmail)
@@ -22,7 +21,7 @@ namespace NotificationDALLibrary.Repositories
             if (string.IsNullOrWhiteSpace(userEmail))
                 throw new ArgumentException("User email cannot be empty.", nameof(userEmail));
 
-            string notificationType;
+            string notificationType = string.Empty;
             string? toEmail = null;
             string? toPhoneNumber = null;
 
@@ -41,150 +40,33 @@ namespace NotificationDALLibrary.Repositories
             }
 
             notification.UserEmail = userEmail;
-            string toEmailValue = toEmail == null ? "NULL" : $"'{toEmail}'";
-            string toPhoneValue = toPhoneNumber == null ? "NULL" : $"'{toPhoneNumber}'";
-            string sql = $"INSERT INTO notifications (user_email, message, sent_date, notification_type, to_email, to_phone_number) VALUES ('{userEmail}', '{notification.Message}', '{notification.SentDate:yyyy-MM-dd HH:mm:ss}', '{notificationType}', {toEmailValue}, {toPhoneValue});";
-            NpgsqlCommand command = new NpgsqlCommand(sql, connection);
-            
-            try
-            {
-                connection.Open();
-                command.ExecuteNonQuery();
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine(ex.Message);
-            }
-            finally
-            {
-                connection?.Close();
-            }
+            _context.Add(notification);
+            _context.SaveChanges();
         }
 
         public List<Notification> GetAllNotifications()
         {
-            string sql = "SELECT n.user_email, n.message, n.sent_date, n.notification_type, n.to_email, n.to_phone_number, u.name, u.phone_number FROM notifications n JOIN users u ON n.user_email = u.email ORDER BY n.sent_date DESC;";
-            NpgsqlCommand command = new NpgsqlCommand(sql, connection);
-            
-            try
-            {
-                connection.Open();
-                NpgsqlDataReader reader = command.ExecuteReader();
-                List<Notification> notifications = new List<Notification>();
-                
-                while (reader.Read())
-                {
-                    notifications.Add(MapNotification(reader));
-                }
-                return notifications;
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine(ex.Message);
-                return new List<Notification>();
-            }
-            finally
-            {
-                connection?.Close();
-            }
+            return _context.Set<Notification>().ToList();
         }
+               
 
         public List<Notification> GetNotificationsForUser(string userEmail)
         {
             if (string.IsNullOrWhiteSpace(userEmail))
                 throw new ArgumentException("User email cannot be empty.", nameof(userEmail));
 
-            string sql = $"SELECT n.user_email, n.message, n.sent_date, n.notification_type, n.to_email, n.to_phone_number, u.name, u.phone_number FROM notifications n JOIN users u ON n.user_email = u.email WHERE n.user_email = '{userEmail}' ORDER BY n.sent_date DESC;";
-            NpgsqlCommand command = new NpgsqlCommand(sql, connection);
-            
-            try
-            {
-                connection.Open();
-                NpgsqlDataReader reader = command.ExecuteReader();
-                List<Notification> notifications = new List<Notification>();
-                
-                while (reader.Read())
-                {
-                    notifications.Add(MapNotification(reader));
-                }
-                return notifications;
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine(ex.Message);
-                return new List<Notification>();
-            }
-            finally
-            {
-                connection?.Close();
-            }
+            return _context.Set<Notification>().Where(n => n.UserEmail == userEmail).ToList();
         }
 
         public void ClearAllNotifications()
         {
-            string sql = "DELETE FROM notifications;";
-            NpgsqlCommand command = new NpgsqlCommand(sql, connection);
-            
-            try
-            {
-                connection.Open();
-                command.ExecuteNonQuery();
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine(ex.Message);
-            }
-            finally
-            {
-                connection?.Close();
-            }
+            _context.Set<Notification>().RemoveRange(_context.Set<Notification>());
+            _context.SaveChanges();
         }
 
         public int GetNotificationCount()
         {
-            string sql = "SELECT COUNT(*) FROM notifications;";
-            NpgsqlCommand command = new NpgsqlCommand(sql, connection);
-            
-            try
-            {
-                connection.Open();
-                object? result = command.ExecuteScalar();
-                return Convert.ToInt32(result);
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine(ex.Message);
-                return 0;
-            }
-            finally
-            {
-                connection?.Close();
-            }
-        }
-
-        public List<Notification>? Get(string userEmail)
-        {
-            List<Notification> notifications = GetNotificationsForUser(userEmail);
-            return notifications.Count == 0 ? null : notifications;
-        }
-
-        private static Notification MapNotification(NpgsqlDataReader reader)
-        {
-            string notificationType = reader[3].ToString() ?? string.Empty;
-            string message = reader[1].ToString() ?? string.Empty;
-            DateTime sentDate = (DateTime)reader[2];
-            string userEmail = reader[0].ToString() ?? string.Empty;
-
-            Notification notification = notificationType switch
-            {
-                "email" => new EmailNotification(reader[4].ToString() ?? string.Empty, message),
-                "sms" => new SmsNotification(reader[5].ToString() ?? string.Empty, message),
-                _ => throw new InvalidOperationException($"Unknown notification type: {notificationType}")
-            };
-
-            notification.SentDate = sentDate;
-            notification.UserEmail = userEmail;
-            return notification;
+            return _context.Set<Notification>().Count();
         }
     }
 }

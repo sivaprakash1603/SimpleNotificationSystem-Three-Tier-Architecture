@@ -16,35 +16,13 @@ namespace NotificationSystem
     {
         private readonly ISendNotification SendNotification;
         private readonly ISystemInteract SystemInteract;
-        private readonly string connectionString;
 
         public Program()
         {
-            connectionString = LoadConnectionString();
-            SendNotification = new NotificationService(connectionString);
-            SystemInteract = new SystemService(connectionString);
+            SendNotification = new NotificationService();
+            SystemInteract = new SystemService();
         }
 
-        private static string LoadConnectionString()
-        {
-            string configPath = Path.Combine(AppContext.BaseDirectory, "appsettings.json");
-
-            if (!File.Exists(configPath))
-            {
-                throw new FileNotFoundException($"Configuration file not found: {configPath}");
-            }
-
-            using JsonDocument document = JsonDocument.Parse(File.ReadAllText(configPath));
-
-            if (!document.RootElement.TryGetProperty("ConnectionStrings", out JsonElement connectionStrings) ||
-                !connectionStrings.TryGetProperty("DefaultConnection", out JsonElement defaultConnection) ||
-                string.IsNullOrWhiteSpace(defaultConnection.GetString()))
-            {
-                throw new InvalidOperationException("ConnectionStrings:DefaultConnection is missing from appsettings.json.");
-            }
-
-            return defaultConnection.GetString()!;
-        }
 
 
         void StartSystem()

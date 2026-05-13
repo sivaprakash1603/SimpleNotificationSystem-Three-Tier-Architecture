@@ -12,6 +12,8 @@ namespace NotificationModelLibrary.Models
 
         public string ToPhoneNumber { get; set; } = string.Empty;
 
+        public SmsNotification() : base() { }
+
         public SmsNotification(string phoneNumber, string message) : base(message)
         {
             if (string.IsNullOrWhiteSpace(phoneNumber))

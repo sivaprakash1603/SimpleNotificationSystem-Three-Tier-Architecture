@@ -13,11 +13,14 @@ namespace NotificationModelLibrary.Models
         public string Name { get; set; } = string.Empty;
         public string Email { get; set; } = string.Empty;
         public string PhoneNumber { get; set; } = string.Empty;
+        public ICollection<Notification> Notifications { get; set; }
 
-        public User() { }
+        public User() { Notifications = new List<Notification>(); }
 
         public User(string name, string email, string phoneNumber)
         {
+            Notifications = new List<Notification>();
+
             if (string.IsNullOrWhiteSpace(name))
             {
                 throw new ArgumentException("User name cannot be empty.", nameof(name));

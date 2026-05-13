@@ -15,10 +15,10 @@ namespace NotificationBLLibrary.Services
         private readonly UserRepository _userRepository;
         private readonly NotificationRepository _notificationRepository;
 
-        public SystemService(string connectionString)
+        public SystemService()
         {
-            _userRepository = new UserRepository(connectionString);
-            _notificationRepository = new NotificationRepository(connectionString);
+            _userRepository = new UserRepository();
+            _notificationRepository = new NotificationRepository();
         }
 
         private User GetUserOrThrow(string email)

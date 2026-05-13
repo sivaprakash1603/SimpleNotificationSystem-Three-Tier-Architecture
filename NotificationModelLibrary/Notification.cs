@@ -11,10 +11,14 @@ namespace NotificationModelLibrary.Models
     public abstract class Notification : INotification
     {
         private const int MinMessageLength = 5;
-
+        public int Id { get; set; }
         public string Message { get; set; } = string.Empty;
-        public DateTime SentDate { get; set; } = DateTime.Now;
+        public DateTime SentDate { get; set; } = DateTime.UtcNow;
         public string UserEmail { get; set; } = string.Empty;
+
+        public User User { get; set; } = null!;
+
+        protected Notification() { }
 
         public Notification(string message)
         {
@@ -29,7 +33,7 @@ namespace NotificationModelLibrary.Models
             }
 
             Message = message;
-            SentDate = DateTime.Now;
+            SentDate = DateTime.UtcNow;
         }
 
         // Send notification to user
